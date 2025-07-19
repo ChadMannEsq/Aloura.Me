@@ -10,7 +10,7 @@ get_header(); ?>
         <div class="signup_content_left">
             <div class="singup_left_wrap">
                 <a href="<?php echo home_url(); ?>"><img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/singup-putri-logo.png"
-                    alt="Putri logo"></a>
+                    alt="Aloura.Me logo"></a>
                 <p>Sign up to support your favorite creators </p>
             </div>
             <div class="signup_rounding"></div>
@@ -24,7 +24,7 @@ get_header(); ?>
                     <p>By signing up you agree to our <a href="#">Terms of Service </a>and <a href="#">Privacy Policy,</a></p>
                 </div>
                 <div class="signup_accout">
-                    <p>Already have an account? <a href="https://putri-chat.hupp.in/signin"> Log in</a></p>
+                    <p>Already have an account? <a href="https://aloura.me/signin"> Log in</a></p>
                 </div>
                 <a href="#" class="signup_withx"><img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/svg/twitter_svgrepo.png"
                 alt="Signup with X"><span>SIGN IN WITH X</span></a>

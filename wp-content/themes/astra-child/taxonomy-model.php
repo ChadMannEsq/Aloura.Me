@@ -38,7 +38,7 @@ if ($term): ?>
                 $current_user = wp_get_current_user();
                 ?>
                 <a class="social-inner"
-                    href="https://putri-chat.hupp.in/conversation?email=<?php echo esc_html($matching_user_email); ?>">
+                    href="https://aloura.me/conversation?email=<?php echo esc_html($matching_user_email); ?>">
                     <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/chat-icon.png" />
                     <span class="header_text">Chat with me</span>
                 </a>

@@ -28,7 +28,7 @@ $astra_404_subtitle_tag = ( true === astra_check_is_structural_setup() ) ? 'h3' 
 		</div>
 
 		<div>
-			<button class="back-home-page"><a href="https://putri-wp.hupp.in"> back to home page >  </a> </button>
+                        <button class="back-home-page"><a href="https://aloura.me"> back to home page >  </a> </button>
 		</div>
 
 	</div><!-- .page-content -->

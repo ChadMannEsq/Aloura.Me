@@ -163,7 +163,7 @@ $table_prefix = 'wp_';
 
 define('FS_METHOD', 'direct');
 
-define('JWT_AUTH_SECRET_KEY', 'putri-wp');
+define('JWT_AUTH_SECRET_KEY', 'aloura-me');
 
 define('JWT_AUTH_CORS_ENABLE', true);
 
@@ -180,7 +180,7 @@ if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') $_SERVER['HTTPS']='on';
 
 define( 'WP_DEBUG', true );
 define( 'SCRIPT_DEBUG', true );
-define( 'WP_DEBUG_LOG', '/Applications/MAMP/htdocs/putri-wp/wp-content/uploads/debug-log-manager/localhost_20240812112619695718_debug.log' );
+define( 'WP_DEBUG_LOG', '/Applications/MAMP/htdocs/aloura-me/wp-content/uploads/debug-log-manager/localhost_20240812112619695718_debug.log' );
 define( 'WP_DEBUG_DISPLAY', false );
 define( 'DISALLOW_FILE_EDIT', false );
 /* That's all, stop editing! Happy publishing. */
