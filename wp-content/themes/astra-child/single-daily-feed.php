@@ -17,9 +17,13 @@
                 <section class="section-feed-video">
                     <?php $video_url = get_post_meta(get_the_ID(), 'feed_video', true); ?>
                     <?php if ($video_url) { ?>
-                        <video controls style="width: 100%;">
-                            <source src="<?php echo $video_url; ?>" type="video/mp4">
-                        </video>
+                        <?php if (function_exists('am_is_user_subscribed') && am_is_user_subscribed()) : ?>
+                            <video controls style="width: 100%;">
+                                <source src="<?php echo $video_url; ?>" type="video/mp4">
+                            </video>
+                        <?php else : ?>
+                            <p><a href="<?php echo esc_url(home_url('/signup/')); ?>">Subscribe to unlock video</a></p>
+                        <?php endif; ?>
                     <?php } ?>
                 </section>
 

@@ -43,6 +43,7 @@ function child_enqueue_styles()
     wp_enqueue_script('slick', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js');
     wp_enqueue_script('magnific-popup', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.2.0/jquery.magnific-popup.min.js');
     wp_enqueue_script('custom-javascript', get_stylesheet_directory_uri() . '/assets/js/script.js');
+    wp_enqueue_script('modern-javascript', get_stylesheet_directory_uri() . '/assets/js/modern.js', array(), CHILD_THEME_ASTRA_CHILD_VERSION, true);
 
     wp_localize_script(
         'custom-javascript',
@@ -52,6 +53,9 @@ function child_enqueue_styles()
             'nonce' => wp_create_nonce('like-nonce')
         )
     );
+    wp_localize_script('modern-javascript', 'ajax_admin', array(
+        'ajax_url' => admin_url('admin-ajax.php')
+    ));
 }
 
 add_action('wp_enqueue_scripts', 'child_enqueue_styles', 15);
@@ -156,6 +160,22 @@ function add_custom_user_role()
     );
 }
 add_action('init', 'add_custom_user_role');
+
+/**
+ * Check if a user has an active subscription.
+ */
+function am_is_user_subscribed($user_id = null) {
+    $user_id = $user_id ? $user_id : get_current_user_id();
+    return get_user_meta($user_id, 'subscription_active', true) === '1';
+}
+
+/**
+ * Set default subscription meta when a user registers.
+ */
+function am_set_default_subscription($user_id) {
+    add_user_meta($user_id, 'subscription_active', '0', true);
+}
+add_action('user_register', 'am_set_default_subscription');
 
 // Rest Api in login
 // function custom_rest_api_init() {
@@ -561,6 +581,13 @@ function custom_login_endpoint()
 }
 add_action('rest_api_init', 'custom_login_endpoint');
 function custom_login_callback(WP_REST_Request $request) {
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $key = 'am_login_' . md5($ip);
+    $attempts = (int) get_transient($key);
+    if ($attempts >= 5) {
+        return new WP_Error('too_many_attempts', 'Too many login attempts. Please wait.', array('status' => 429));
+    }
+
     $email = sanitize_email($request->get_param('email'));
     $password = sanitize_text_field($request->get_param('password'));
     
@@ -584,6 +611,7 @@ function custom_login_callback(WP_REST_Request $request) {
 
     if (is_wp_error($user)) {
         $error_code = $user->get_error_code();
+        set_transient($key, $attempts + 1, 5 * 60);
 
         // Check for specific WP error codes
         if ($error_code === 'invalid_username') {
@@ -596,6 +624,7 @@ function custom_login_callback(WP_REST_Request $request) {
     }
 
     // Authentication successful
+    delete_transient($key);
     $user_type = get_user_meta($user->ID, 'user_registration_user_type', true);
     $user_type = strtolower($user_type);
 
@@ -706,3 +735,130 @@ function modify_menu_items_based_on_login($items, $args) {
     return $items;
 }
 add_filter('wp_nav_menu_items', 'modify_menu_items_based_on_login', 10, 2);
+
+/**
+ * Register custom post type for private messages.
+ */
+function am_register_message_cpt() {
+    register_post_type('private_message', array(
+        'public' => false,
+        'show_ui' => true,
+        'label' => 'Private Messages',
+        'supports' => array('title', 'editor', 'author', 'custom-fields'),
+        'capability_type' => 'post',
+    ));
+}
+add_action('init', 'am_register_message_cpt');
+
+/**
+ * REST endpoint to send a private message.
+ */
+function am_rest_send_message(WP_REST_Request $request) {
+    if (!is_user_logged_in()) {
+        return new WP_Error('forbidden', 'Authentication required', array('status' => 401));
+    }
+    $recipient = intval($request->get_param('recipient'));
+    $content   = sanitize_text_field($request->get_param('message'));
+    if (!$recipient || empty($content)) {
+        return new WP_Error('missing', 'Recipient and message required', array('status' => 400));
+    }
+    $post_id = wp_insert_post(array(
+        'post_type' => 'private_message',
+        'post_title' => 'Message to ' . $recipient,
+        'post_content' => $content,
+        'post_status' => 'publish',
+        'post_author' => get_current_user_id(),
+        'meta_input' => array('recipient' => $recipient)
+    ));
+    return array('id' => $post_id);
+}
+
+/**
+ * REST endpoint to list current user's messages.
+ */
+function am_rest_get_messages() {
+    if (!is_user_logged_in()) {
+        return new WP_Error('forbidden', 'Authentication required', array('status' => 401));
+    }
+    $args = array(
+        'post_type' => 'private_message',
+        'meta_key'   => 'recipient',
+        'meta_value' => get_current_user_id(),
+        'posts_per_page' => -1,
+    );
+    $query = get_posts($args);
+    $messages = array();
+    foreach ($query as $msg) {
+        $messages[] = array(
+            'id' => $msg->ID,
+            'content' => $msg->post_content,
+            'from' => $msg->post_author,
+            'date' => $msg->post_date,
+        );
+    }
+    return $messages;
+}
+
+/**
+ * REST endpoint to send a tip to another user.
+ */
+function am_rest_send_tip(WP_REST_Request $request) {
+    if (!is_user_logged_in()) {
+        return new WP_Error('forbidden', 'Authentication required', array('status' => 401));
+    }
+    $user_id = intval($request->get_param('user'));
+    $amount  = floatval($request->get_param('amount'));
+    if (!$user_id || $amount <= 0) {
+        return new WP_Error('invalid', 'Invalid parameters', array('status' => 400));
+    }
+    $current = (float) get_user_meta($user_id, 'tips_total', true);
+    update_user_meta($user_id, 'tips_total', $current + $amount);
+    return array('success' => true);
+}
+
+/**
+ * REST endpoint to fetch analytics for the current user.
+ */
+function am_rest_get_analytics() {
+    if (!is_user_logged_in()) {
+        return new WP_Error('forbidden', 'Authentication required', array('status' => 401));
+    }
+    $posts = get_posts(array('author' => get_current_user_id(), 'posts_per_page' => -1));
+    $views = 0;
+    foreach ($posts as $p) {
+        $views += (int) get_post_meta($p->ID, 'view_count', true);
+    }
+    return array('total_views' => $views);
+}
+
+add_action('rest_api_init', function () {
+    register_rest_route('custom/v1', '/message', array(
+        'methods' => 'POST',
+        'callback' => 'am_rest_send_message',
+    ));
+    register_rest_route('custom/v1', '/messages', array(
+        'methods' => 'GET',
+        'callback' => 'am_rest_get_messages',
+    ));
+    register_rest_route('custom/v1', '/tip', array(
+        'methods' => 'POST',
+        'callback' => 'am_rest_send_tip',
+    ));
+    register_rest_route('custom/v1', '/analytics', array(
+        'methods' => 'GET',
+        'callback' => 'am_rest_get_analytics',
+    ));
+});
+
+/**
+ * Increment post view count.
+ */
+function am_record_view() {
+    if (is_singular()) {
+        $id = get_the_ID();
+        $views = (int) get_post_meta($id, 'view_count', true);
+        update_post_meta($id, 'view_count', $views + 1);
+    }
+}
+add_action('wp_head', 'am_record_view');
+

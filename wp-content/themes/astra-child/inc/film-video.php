@@ -67,3 +67,21 @@ function save_film_video_meta_box($post_id) {
     }
 }
 add_action('save_post', 'save_film_video_meta_box');
+
+/**
+ * Validate uploaded video files.
+ */
+function am_limit_video_upload($file) {
+    $type = wp_check_filetype($file['name']);
+    $allowed = array('mp4', 'mov', 'avi');
+    if (!in_array($type['ext'], $allowed)) {
+        $file['error'] = 'Invalid video type';
+        return $file;
+    }
+    $max = 100 * 1024 * 1024; // 100MB
+    if ($file['size'] > $max) {
+        $file['error'] = 'Video exceeds maximum size of 100MB';
+    }
+    return $file;
+}
+add_filter('wp_handle_upload_prefilter', 'am_limit_video_upload');
