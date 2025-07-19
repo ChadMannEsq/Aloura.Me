@@ -1,0 +1,270 @@
+/* ============================== contact page ==================================== */
+.contact_page_wrapper {
+    max-width: 1100px !important;
+}
+
+.contact_support_title {
+    font-size: 50px !important;
+    font-weight: 900;
+    line-height: 50px;
+    text-transform: uppercase;
+    color: #000000 !important;
+
+}
+
+.remove_list_style {
+    list-style: none;
+    padding-left: 0 !important;
+
+    li {
+        font-size: 18px;
+        line-height: 35px;
+        color: #000000 !important;
+    }
+
+    a {
+        color: #000000 !important;
+    }
+}
+
+.contact_address {
+    font-size: 18px;
+    line-height: 35px;
+    color: #000000 !important;
+}
+
+.form_description {
+    color: #ADADAD;
+    font-size: 18px;
+    line-height: 30px;
+    margin-bottom: 0px !important;
+
+    a {
+        color: #ADADAD;
+    }
+}
+
+.contact_support_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contact_support_form {
+    input {
+        margin-bottom: 20px;
+    }
+
+    br {
+        display: none;
+    }
+}
+
+.custom-message-field {
+    background-color: #E9E9E9;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 20px;
+    height: 130px;
+}
+
+/* ============================== content removal page ==================================== */
+
+.FAQ_wrapper {
+    max-width: 1100px !important;
+}
+
+
+.faq_accordion {
+    background-color: #F6F6F6 !important;
+    color: #000000;
+    font-size: 16px;
+    line-height: 26px;
+    border: none !important;
+    padding: 0;
+
+    svg {
+        fill: #ADADAD !important;
+        height: 20px !important;
+        width: 20px !important;
+    }
+}
+
+.uagb-faq-item-active {
+    .uagb-faq-questions-button {
+        color: #959595;
+    }
+}
+
+.uagb-faq-content {
+    padding: 0 30px 30px !important;
+    font-size: 18px;
+    line-height: 30px;
+}
+
+.uagb-faq-questions-button {
+    padding: 0 30px !important;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 18px;
+    line-height: 30px;
+}
+
+.uagb-faq-child__outer-wrap {
+    margin-bottom: 30px !important;
+}
+
+.faq_header_title {
+    font-size: 95px !important;
+    line-height: 96px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 0 !important;
+}
+
+/* ============================== content removal page ==================================== */
+
+.content_removal_wrapper{
+max-width: 1100px !important;
+margin: 0 auto !important;
+}
+
+.content_removal_title{
+    font-size: 50px !important; 
+    font-weight: 900;
+    margin-bottom: 0px !important;
+    text-transform: uppercase;
+}
+
+.content_removal_text{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 0 !important;
+    color: #000000;
+    line-height: 30px;
+}
+
+.content_removal_text_custom{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 0 !important;
+    color: #000000;
+    line-height: 30px;
+    text-transform: uppercase;
+} 
+
+.content_removal_form_description{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 0 !important;
+    color: #ADADAD;
+    line-height: 30px;
+}
+
+.content_removal_form{
+    label{
+        font-size: 18px;
+        line-height: 30px;
+    }
+
+    br{
+        display: none;
+    }
+}
+
+.wpcf7-form-control-wrap input{
+background-color: #E9E9E9;
+border: 0 !important;
+border-radius: 0;
+min-height: 50px;
+
+}
+
+.wpcf7-submit{
+    border-radius: 0 !important;
+    text-transform: uppercase;
+    font-size: 18px;
+    line-height: 30px;
+}
+
+.wpcf7-form-control-wrap textarea{
+    background-color: #E9E9E9 !important;
+    border: 0 !important;
+    border-radius: 0;
+    min-height: 50px;
+    height: 130px;
+}
+
+.wpcf7-form-control.wpcf7-radio{
+    display: flex;
+    flex-direction: column !important;
+    .wpcf7-list-item{
+        margin: 0;
+
+        input{
+            min-height: 35px !important;
+        }
+    }
+}
+
+.site-primary-footer-wrap {
+    padding-top: 89px;
+    padding-bottom: 50px;
+}
+
+@media (max-width:1024px) {
+    .faq_header_title {
+        font-size: 55px !important;
+        line-height: 55px;
+    }
+
+    .uagb-container-inner-blocks-wrap{
+        flex-direction: column !important;
+
+        .wp-block-uagb-container{
+            max-width: 70% !important;
+            width: 70% !important;
+        }
+    }
+
+    
+    
+}
+
+@media (max-width:768px) {
+    .faq_header_title {
+        font-size: 40px !important;
+        line-height: 43px;
+    }
+
+    .uagb-faq-content {
+        font-size: 16px;
+        line-height: 22px;
+    }
+
+    .contact_support_title {
+        font-size: 40px !important;
+        line-height: 45px;
+    }
+    .uagb-container-inner-blocks-wrap{
+        flex-direction: column !important;
+
+        .wp-block-uagb-container{
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+    }
+}
+
+@media (max-width:568px) {
+    .contact_support_title {
+        font-size: 30px !important;
+        line-height: 35px;
+    }
+
+    .contact_page_wrapper {
+        gap: 0;
+    }
+}

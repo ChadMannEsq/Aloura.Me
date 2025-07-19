@@ -1,0 +1,19 @@
+stages:
+  - deploy
+variables: # set this variables in gitlab CI/CD Variables section
+  container_name: $container_name  #give the name without space
+  db_user: $db_user
+  db_pass: $db_pass
+  db_name: $db_name
+  app_port: $app_port #port on which app will run e.g http://dev-zgv2.hupp.in:7601/
+  container_port: $container_port #docker container port
+deploy_production:
+  stage: deploy
+  interruptible: true
+  script: #set this commands as per project, check configuration of jenkins and take it from there
+    - docker build --cpu-period="100000" --cpu-quota="150000" -t $container_name .
+    - docker rm -f $container_name
+    - docker run --name $container_name --restart always -e WORDPRESS_DB_NAME=$db_name -e WORDPRESS_DB_USER=$db_user -e WORDPRESS_DB_PASSWORD=$db_pass -e WORDPRESS_TABLE_PREFIX=$db_prefix -d -p $app_port:$container_port $container_name
+    - echo  http://localhost:$app_port
+  only:
+    - staging # will trigger if code pushed in this branch
