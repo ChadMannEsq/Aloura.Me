@@ -17,7 +17,7 @@ jQuery(document).ready(function ($) {
 });
 
 jQuery(document).ready(function () {
-  jQuery(".popup_open_btn").click(function () {
+  jQuery(".popup_open_btn").on("click", function () {
     jQuery(".filter_container").css({
       display: "block",
     });
@@ -26,7 +26,7 @@ jQuery(document).ready(function () {
     });
   });
 
-  jQuery(".popup_close_btn").click(function () {
+  jQuery(".popup_close_btn").on("click", function () {
     jQuery(".filter_container").css({
       display: "none",
     });
@@ -38,7 +38,7 @@ jQuery(document).ready(function () {
 
 jQuery(document).ready(function ($) {
   // Pause video on mouse leave
-  jQuery(".film_item").mouseleave(function () {
+  jQuery(".film_item").on("mouseleave", function () {
     $(this).find("video")[0].pause();
   });
 });
@@ -47,15 +47,14 @@ jQuery(document).ready(function () {
   var video = jQuery(".preview_video")[0]; // Get the actual video element
 
   // Play the video on hover
-  jQuery(".video-container").hover(
-    function () {
+  jQuery(".video-container")
+    .on("mouseenter", function () {
       video.currentTime = 0; // Reset video to start
       video.play();
-    },
-    function () {
+    })
+    .on("mouseleave", function () {
       video.pause();
-    }
-  );
+    });
 });
 
 jQuery(document).ready(function () {
