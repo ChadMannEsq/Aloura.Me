@@ -18,17 +18,20 @@
                 <div class="singlepage_content_wrap">
                     <!-- Film Video -->
                     <section class="section-film-video">
-                        <?php $video_url = get_post_meta(get_the_ID(), 'model_film_video', true); ?>
-                        <?php if ($video_url) { ?>
-                            <div class="video_wrap">
-                                <p class="page_preview">Preview</p>
+                    <?php $video_url = get_post_meta(get_the_ID(), 'model_film_video', true); ?>
+                    <?php if ($video_url) { ?>
+                        <div class="video_wrap">
+                            <?php if (function_exists('am_is_user_subscribed') && am_is_user_subscribed()) : ?>
                                 <div class="video-container">
                                     <video class="preview_video" controls>
                                         <source src="<?php echo $video_url; ?>" type="video/mp4">
                                     </video>
                                 </div>
-                            </div>
-                        <?php } ?>
+                            <?php else : ?>
+                                <p><a href="<?php echo esc_url(home_url('/signup/')); ?>">Subscribe to unlock full video</a></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php } ?>
 
                         <div class="film-video-content">
                             <?php the_content(); ?>
