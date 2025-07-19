@@ -477,7 +477,7 @@ function custom_call_external_api_on_user_registration($user_id)
 
     error_log('Body Data: ' . $body);
 
-    $response = wp_remote_post('https://putri-chat.hupp.in/api/auth/signup', array(
+    $response = wp_remote_post('https://aloura.me/api/auth/signup', array(
         'method' => 'POST',
         'body' => json_encode($body),
         'headers' => array(
@@ -656,7 +656,7 @@ add_action('init', 'set_custom_cookie_flags');
 
 function add_cors_http_header() {
     
-    header("Access-Control-Allow-Origin: https://putri-chat.hupp.in");
+    header("Access-Control-Allow-Origin: https://aloura.me");
     header("Access-Control-Allow-Credentials: true");
 }
 add_action('init', 'add_cors_http_header');

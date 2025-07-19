@@ -98,7 +98,7 @@
                                 <a class="cusrsor-pointer" href="#">
                                     <img src="wp-content/themes/astra/inc/assets/images/starter-content/branding.jpg" alt="">
                                     <div class="more_film_details">
-                                        <p class="film_vendor_name">With Putri</p>
+                                        <p class="film_vendor_name">With Aloura.Me</p>
                                         <h4 class="vendor_title">lOREM iPSUM (FILM)</h4>
                                     </div>
                                 </a>
@@ -107,7 +107,7 @@
                                 <a class="cusrsor-pointer" href="#">
                                     <img src="wp-content/themes/astra/inc/assets/images/starter-content/branding.jpg" alt="">
                                     <div class="more_film_details">
-                                        <p class="film_vendor_name">With Putri</p>
+                                        <p class="film_vendor_name">With Aloura.Me</p>
                                         <h4 class="vendor_title">lOREM iPSUM (FILM)</h4>
                                     </div>
                                 </a>

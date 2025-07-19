@@ -61,7 +61,7 @@ while (have_posts()):
         <section>
             <div class="common_header">
                 <h1 class="header_title">Popular</h1>
-                <p class="header_text">Enjoy top films from Putri</p>
+                <p class="header_text">Enjoy top films from Aloura.Me</p>
             </div>
 
             <div class="popular_wrapper">
