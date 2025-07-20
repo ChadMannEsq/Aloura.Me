@@ -866,8 +866,15 @@ add_action('wp_head', 'am_record_view');
  * Output link to performer application in the footer.
  */
 function astra_child_creator_footer_link() {
-    $page = get_page_by_path( 'performer-application' );
-    if ( $page ) {
+    $pages = get_pages( array(
+        'meta_key'   => '_wp_page_template',
+        'meta_value' => 'page-performer-application.php',
+        'number'     => 1,
+        'post_status'=> 'publish',
+    ) );
+
+    if ( ! empty( $pages ) ) {
+        $page = $pages[0];
         echo '<a href="' . esc_url( get_permalink( $page->ID ) ) . '" class="apply-as-creator-link">Apply as a Creator</a>';
     }
 }
