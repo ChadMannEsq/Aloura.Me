@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return {
         messages: [],
         newMessage: '',
-        aiTyping: false
+        creatorTyping: false
       };
     },
     created() {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!text) return;
         this.messages.push({ content: text, from: 'me' });
         this.newMessage = '';
-        this.aiTyping = true;
+        this.creatorTyping = true;
         fetch('/wp-json/custom/v1/message', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -40,13 +40,13 @@ document.addEventListener('DOMContentLoaded', function () {
           .then(r => r.json())
           .then(res => {
             if (res && res.type === 'exclusive_message' && res.link) {
-              this.messages.push({ content: res.link, from: 'ai', exclusive: true });
+              this.messages.push({ content: res.link, from: 'creator', exclusive: true });
             } else if (res && res.reply) {
-              this.messages.push({ content: res.reply, from: 'ai' });
+              this.messages.push({ content: res.reply, from: 'creator' });
             }
           })
           .finally(() => {
-            this.aiTyping = false;
+            this.creatorTyping = false;
           });
       }
     },
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <a :href="m.content">Unlock Exclusive Message</a>
             </div>
           </div>
-          <div v-if="aiTyping" class="typing">AI is typing...</div>
+          <div v-if="creatorTyping" class="typing">Creator is typing...</div>
         </div>
         <div class="input-area">
           <input v-model="newMessage" @keyup.enter="send" placeholder="Type a message" />
