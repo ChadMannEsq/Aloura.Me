@@ -65,6 +65,14 @@ class OnlyFansLikeChat {
             'onlyfans-like-chat',
             array($this, 'settings_page_html')
         );
+        add_submenu_page(
+            'options-general.php',
+            'High Value Fans',
+            'High Value Fans',
+            'manage_options',
+            'ofl-high-value-fans',
+            array($this, 'high_value_fans_page_html')
+        );
     }
 
     public function register_settings() {
@@ -100,6 +108,38 @@ class OnlyFansLikeChat {
                 </table>
                 <?php submit_button(); ?>
             </form>
+        </div>
+        <?php
+    }
+
+    public function high_value_fans_page_html() {
+        $users = get_users(array(
+            'meta_key' => 'ofl_total_spend',
+            'orderby'  => 'meta_value_num',
+            'order'    => 'DESC',
+            'number'   => 50,
+        ));
+        ?>
+        <div class="wrap">
+            <h1><?php esc_html_e('High Value Fans', 'ofl'); ?></h1>
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e('User', 'ofl'); ?></th>
+                        <th><?php esc_html_e('Total Spend', 'ofl'); ?></th>
+                        <th><?php esc_html_e('Last AI Chat', 'ofl'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($users as $u) : ?>
+                    <tr>
+                        <td><?php echo esc_html($u->user_login); ?></td>
+                        <td><?php echo esc_html(get_user_meta($u->ID, 'ofl_total_spend', true)); ?></td>
+                        <td><?php echo esc_html(get_user_meta($u->ID, 'ofl_last_ai_chat', true)); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
         <?php
     }
