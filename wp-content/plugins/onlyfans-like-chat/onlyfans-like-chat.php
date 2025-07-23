@@ -15,6 +15,9 @@ class OnlyFansLikeChat {
         register_activation_hook(__FILE__, array($this, 'activate'));
         register_deactivation_hook(__FILE__, array($this, 'deactivate'));
         add_action('init', array($this, 'register_post_types'));
+        add_action('admin_menu', array($this, 'register_settings_page'));
+        add_action('admin_init', array($this, 'register_settings'));
+        add_action('rest_api_init', array($this, 'load_rest_endpoints'));
     }
 
     public function activate() {
@@ -47,6 +50,58 @@ class OnlyFansLikeChat {
             'show_ui' => true,
             'supports' => array('title', 'editor', 'author'),
         ));
+    }
+
+    public function load_rest_endpoints() {
+        require_once plugin_dir_path(__FILE__) . 'class-ai-chat-endpoints.php';
+        OFL_AI_Chat_Endpoints::register_routes();
+    }
+
+    public function register_settings_page() {
+        add_options_page(
+            'OnlyFans-like Chat',
+            'OnlyFans-like Chat',
+            'manage_options',
+            'onlyfans-like-chat',
+            array($this, 'settings_page_html')
+        );
+    }
+
+    public function register_settings() {
+        register_setting('ofl_chat_settings', 'ofl_chat_api_url');
+        register_setting('ofl_chat_settings', 'ofl_chat_api_key');
+    }
+
+    public function settings_page_html() {
+        ?>
+        <div class="wrap">
+            <h1><?php esc_html_e('OnlyFans-like Chat Settings', 'ofl'); ?></h1>
+            <form method="post" action="options.php">
+                <?php
+                settings_fields('ofl_chat_settings');
+                ?>
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row">
+                            <label for="ofl_chat_api_url"><?php esc_html_e('API URL', 'ofl'); ?></label>
+                        </th>
+                        <td>
+                            <input name="ofl_chat_api_url" type="text" id="ofl_chat_api_url" value="<?php echo esc_attr(get_option('ofl_chat_api_url')); ?>" class="regular-text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="ofl_chat_api_key"><?php esc_html_e('API Key', 'ofl'); ?></label>
+                        </th>
+                        <td>
+                            <input name="ofl_chat_api_key" type="text" id="ofl_chat_api_key" value="<?php echo esc_attr(get_option('ofl_chat_api_key')); ?>" class="regular-text" />
+                        </td>
+                    </tr>
+                </table>
+                <?php submit_button(); ?>
+            </form>
+        </div>
+        <?php
     }
 }
 
