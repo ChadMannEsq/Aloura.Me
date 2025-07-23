@@ -78,6 +78,11 @@ class OnlyFansLikeChat {
     public function register_settings() {
         register_setting('ofl_chat_settings', 'ofl_chat_api_url');
         register_setting('ofl_chat_settings', 'ofl_chat_api_key');
+        register_setting('ofl_chat_settings', 'ofl_chat_enable_ai', array(
+            'type' => 'boolean',
+            'sanitize_callback' => 'rest_sanitize_boolean',
+            'default' => false,
+        ));
     }
 
     public function settings_page_html() {
@@ -103,6 +108,14 @@ class OnlyFansLikeChat {
                         </th>
                         <td>
                             <input name="ofl_chat_api_key" type="text" id="ofl_chat_api_key" value="<?php echo esc_attr(get_option('ofl_chat_api_key')); ?>" class="regular-text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="ofl_chat_enable_ai"><?php esc_html_e('Enable Auto-Chat', 'ofl'); ?></label>
+                        </th>
+                        <td>
+                            <input name="ofl_chat_enable_ai" type="checkbox" id="ofl_chat_enable_ai" value="1" <?php checked(1, get_option('ofl_chat_enable_ai', 0)); ?> />
                         </td>
                     </tr>
                 </table>

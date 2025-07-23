@@ -22,6 +22,10 @@ class OFL_AI_Chat_Endpoints {
             return new WP_Error('missing_params', 'creator_id and message are required', array('status' => 400));
         }
 
+        if (!get_option('ofl_chat_enable_ai')) {
+            return array('response' => '');
+        }
+
         $api_url = rtrim(get_option('ofl_chat_api_url'), '/');
         if (!$api_url) {
             return new WP_Error('no_api_url', 'API URL not configured', array('status' => 500));
