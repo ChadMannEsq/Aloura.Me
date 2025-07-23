@@ -28,9 +28,20 @@ class OFL_AI_Chat_Endpoints {
         }
         $api_key = get_option('ofl_chat_api_key');
 
+        $user_id = get_current_user_id();
+        $spend   = (float) get_user_meta($user_id, 'ofl_total_spend', true);
+        $spend  += 1; // simple per-message cost
+        update_user_meta($user_id, 'ofl_total_spend', $spend);
+        $last = current_time('mysql');
+        update_user_meta($user_id, 'ofl_last_ai_chat', $last);
+
         $body = wp_json_encode(array(
             'creator_id' => $creator_id,
             'message'    => $message,
+            'traits'     => array(
+                'total_spend'     => $spend,
+                'last_interaction'=> $last,
+            ),
         ));
         $args = array(
             'headers' => array(
