@@ -880,3 +880,13 @@ function astra_child_creator_footer_link() {
 }
 add_action( 'astra_footer_content_bottom', 'astra_child_creator_footer_link' );
 
+
+// Enqueue chat assets when the Chat template is used
+function astra_child_enqueue_chat_assets() {
+    if (is_page_template('templates/page-chat.php')) {
+        wp_enqueue_style('astra-chat-style', get_stylesheet_directory_uri() . '/assets/css/chat.css', array(), CHILD_THEME_ASTRA_CHILD_VERSION);
+        wp_enqueue_script('vue', 'https://unpkg.com/vue@3/dist/vue.global.prod.js', array(), null, true);
+        wp_enqueue_script('astra-chat-js', get_stylesheet_directory_uri() . '/assets/js/chat.js', array('vue'), CHILD_THEME_ASTRA_CHILD_VERSION, true);
+    }
+}
+add_action('wp_enqueue_scripts', 'astra_child_enqueue_chat_assets');
